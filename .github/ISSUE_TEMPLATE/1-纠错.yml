@@ -1,0 +1,28 @@
+name: 纠错：条目写错了或过时了
+description: 数字不对、法规改了、来源打不开、说法有误
+title: "第 X 节第 Y 条："
+labels: ["纠错"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: 哪一条
+      description: 写节号和条号，比如「第 6 节第 2 条」。
+      placeholder: 第 X 节第 Y 条
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 哪里不对
+      description: 把原文那句抄过来，再说应该是什么。
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: 依据
+      description: 给一个期刊论文链接或官方文件链接。只认这两类，别的会被关掉。
+      placeholder: https://
+    validations:
+      required: false

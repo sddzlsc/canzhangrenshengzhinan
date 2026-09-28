@@ -1,0 +1,37 @@
+name: 想加一条
+description: 提一件书里没写、但你觉得该写的事
+title: "想加："
+labels: ["新内容"]
+body:
+  - type: input
+    id: topic
+    attributes:
+      label: 想加什么
+      description: 一句话说清要办的事，比如「听力障碍者办残疾人证的流程」。
+    validations:
+      required: true
+  - type: dropdown
+    id: section
+    attributes:
+      label: 放进哪一节
+      options:
+        - 1 防病与长寿
+        - 2 身体的日常：康复、辅具与并发症
+        - 3 出事现场与急救
+        - 4 钱：省钱、防骗与理财
+        - 5 法律红线与维权
+        - 6 证件、社保医保与兜底待遇
+        - 7 失业、就业、工伤与学什么技能
+        - 8 恋爱、结婚、家庭与照护
+        - 9 怀孕、生孩子与育儿
+        - 10 出国、留学与无障碍出行
+        - 说不准
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: 来源
+      description: 期刊论文或官方文件的链接。不确定也没关系，写清你是在哪看到的。
+    validations:
+      required: false
