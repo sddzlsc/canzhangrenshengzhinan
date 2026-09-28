@@ -7,9 +7,10 @@
 //
 // 分三类：
 //   可达    2xx / 3xx（跟着跳转之后）
-//   被拦    401 403 406 429 —— 出版社和部分政府站点对脚本一律 403，这不是失效。
-//           这些来源在 docs/核实记录 里注明了「403 但已用 Crossref / PubMed 元数据核对」。
-//   失败    404 410、5xx、网络错误、超时 —— 这些要人工看一眼，可能是链接写错或者官方页面搬家。
+//   被拦    401 403 406 429，以及超时、连不上 —— 出版社对脚本一律 403，政府站点对境外
+//           网络常常连不上，这些都不是「链接失效」。被拦的来源在 docs/核实记录 里都写明了
+//           实际核对渠道（Crossref / PubMed 元数据，或本地抓到的正文）。
+//   失败    404 410、5xx —— 这些要人工看一眼，可能是链接写错或者官方页面搬家。
 // CI 里这一步挂的是 continue-on-error，挡不住发布，只做提示。
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -68,7 +69,9 @@ async function check(url) {
     if ([401, 403, 406, 429].includes(s)) return { kind: 'blocked', note: String(s) };
     return { kind: 'fail', note: String(s) };
   } catch (err) {
-    return { kind: 'fail', note: (err && err.name === 'TimeoutError') ? '超时' : String(err && err.message || err) };
+    // 超时和连不上多半是网络环境问题（CI 在境外，很多政府站点连不上），不当失效处理
+    const note = (err && err.name === 'TimeoutError') ? '超时' : String(err && err.message || err);
+    return { kind: 'blocked', note };
   }
 }
 
